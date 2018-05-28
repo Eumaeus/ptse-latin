@@ -2,7 +2,7 @@
 
 This library implements methods for validating plain-text scholarly editions in Latin.
 
-## Current version: 0.1.0
+## Current version: 1.0.0
 
 Status:  **active development**. [Release notes](releases.md)
 

@@ -190,4 +190,16 @@ urn:cts:latinLit:phi0893.phi001.fulat1:1.36.2#placare et vituli sanguine debito
      assert (strHisto(0)._2 == 3)
   }
 
+  it should "generate a list of valid lexical words" in {
+    val testCorpus:String = """
+urn:cts:latinLit:phi0893.phi001.fulat1:1.36.1#Et ture, et fidibus juvat, 
+urn:cts:latinLit:phi0893.phi001.fulat1:1.36.2#placare et vituli sanguine debito 
+"""     
+     val corp:Corpus = Corpus(testCorpus,"#")
+     val pe:PtseLatin = PtseLatin(corp, Latin23Alphabet)
+     val wl:String = pe.wordList
+     assert (wl.lines.size == 6)
+     assert (wl.lines.toVector(0) == "et" )
+  }
+
 }

@@ -91,7 +91,7 @@ import java.text.Normalizer
 		stringHisto
 	}
 
-/** Generate histograph of chacters for a corpus
+	/** Generate histograph of chacters for a corpus
 	* N.b. case is unchanged
 	**/
 	def codepointHistoForCorpus:Vector[(String,Int)] = {
@@ -104,6 +104,11 @@ import java.text.Normalizer
 		stringHisto
 	}
 
+
+
+	/** Generate histograph of chacters for a corpus, excluding those in Invalid Tokens
+	* N.b. case is unchanged
+	**/
 	def codepointHistoForValidCorpus:Vector[(String,Int)] = {
 		val skipCategory:Vector[LatinLexicalCategory] = Vector(InvalidToken)
 		val validString:String = {
@@ -122,6 +127,9 @@ import java.text.Normalizer
 		stringHisto
 	}
 
+
+	/** Generate histogram of tokens by category
+	*/
 	def tokenHisto(category:LatinLexicalCategory):Vector[(String,Int)] = {
 		val toks:Vector[String] = {
 			category match {
@@ -140,6 +148,14 @@ import java.text.Normalizer
 			toks.groupBy(lt => lt).map(m => (m._1, m._2.size)).toSeq.sortBy(_._2).reverse.toVector
 		}
 		tokenHistograph
+	}
+
+	/* 
+	Generate a simple list of unique words, based on the text values of all LexicalTokens.
+	*/
+	def wordList:String = {
+		val wl:String = tokenHisto(LexicalToken).map(t => t._1).mkString("\n")
+		wl
 	}
 
 
