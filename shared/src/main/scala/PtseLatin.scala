@@ -104,5 +104,43 @@ import java.text.Normalizer
 		stringHisto
 	}
 
+	def codepointHistoForValidCorpus:Vector[(String,Int)] = {
+		val skipCategory:Vector[LatinLexicalCategory] = Vector(InvalidToken)
+		val validString:String = {
+			tokenCategories.map( tc => {
+				if (skipCategory.contains(tc)) {
+					""
+				} else {
+					val theseTokens:Vector[LatinToken] = tokens.filter(_.category == tc)	
+					normalizeLatin(theseTokens.view.map(_.text).reduce(_ + _))
+				}
+			}).reduce(_ + _)
+		}
+		val codePointVec:Vector[Int] = strToCps( validString )
+		val cpHisto:Vector[(Int, Int)] = codePointVec.groupBy(s => s).map(m => (m._1, m._2.size)).toSeq.sortBy(_._2).reverse.toVector
+		val stringHisto:Vector[(String, Int)] = cpHisto.map(m => ( new String(Character.toChars(m._1)), m._2))
+		stringHisto
+	}
+
+	def tokenHisto(category:LatinLexicalCategory):Vector[(String,Int)] = {
+		val toks:Vector[String] = {
+			category match {
+				case LexicalToken => {
+					tokens.view.filter(_.category == category).map( t => normalizeLatin(t.text.toLowerCase) ).toVector
+				}
+				case NumericToken => {
+					tokens.view.filter(_.category == category).map( t => normalizeLatin(t.text.toUpperCase) ).toVector
+				}
+				case _ => {
+					tokens.view.filter(_.category == category).map( t =>  normalizeLatin(t.text)).toVector
+				}
+			}
+		}
+		val tokenHistograph:Vector[(String,Int)] = {
+			toks.groupBy(lt => lt).map(m => (m._1, m._2.size)).toSeq.sortBy(_._2).reverse.toVector
+		}
+		tokenHistograph
+	}
+
 
 }

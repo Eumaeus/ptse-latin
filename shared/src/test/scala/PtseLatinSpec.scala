@@ -164,5 +164,30 @@ urn:cts:latinLit:phi0893.phi001.fulat1:1.36.2#dd e"""
      assert (strHisto(1)._2 == 4)
   }
 
+  it should "return a histogram of codepoints, rendered as strings, for an entire corpus, omitting invalid tokens" in {
+       val testCorpus:String = """urn:cts:latinLit:phi0893.phi001.fulat1:1.36.1#aaaaa bbbb ccc
+urn:cts:latinLit:phi0893.phi001.fulat1:1.36.2#dd e juvat"""
+     val corp:Corpus = Corpus(testCorpus,"#")
+     val pe:PtseLatin = PtseLatin(corp, Latin23Alphabet)
+     val strHisto:Vector[(String,Int)] = pe.codepointHistoForValidCorpus
+     assert (strHisto.size == 5)
+     assert (strHisto(0)._1 == "a")
+     assert (strHisto(0)._2 == 5)
+     assert (strHisto(1)._1 == "b")
+     assert (strHisto(1)._2 == 4)
+  }
+
+ it should "return a histogram of of tokens, by type" in {
+    val testCorpus:String = """
+urn:cts:latinLit:phi0893.phi001.fulat1:1.36.1#Et ture, et fidibus juvat, 
+urn:cts:latinLit:phi0893.phi001.fulat1:1.36.2#placare et vituli sanguine debito 
+"""     
+     val corp:Corpus = Corpus(testCorpus,"#")
+     val pe:PtseLatin = PtseLatin(corp, Latin23Alphabet)
+     val strHisto:Vector[(String,Int)] = pe.tokenHisto(LexicalToken)
+     assert (strHisto.size == 6)
+     assert (strHisto(0)._1 == "et")
+     assert (strHisto(0)._2 == 3)
+  }
 
 }
