@@ -1,6 +1,6 @@
-name := "PSTE-Latin"
+name := "PTSE-Latin"
 
-crossScalaVersions in ThisBuild := Seq("2.10.6","2.11.8", "2.12.4")
+crossScalaVersions in ThisBuild := Seq("2.11.8", "2.12.4")
 scalaVersion := (crossScalaVersions in ThisBuild).value.last
 
 
@@ -22,7 +22,7 @@ lazy val crossed = crossProject.in(file(".")).
     settings(
       name := "ptselat",
       organization := "edu.holycross.shot",
-      version := "1.0.0",
+      version := "1.0.1",
       licenses += ("GPL-3.0",url("https://opensource.org/licenses/gpl-3.0.html")),
       libraryDependencies ++= Seq(
         "org.scala-js" %% "scalajs-stubs" % scalaJSVersion % "provided",
